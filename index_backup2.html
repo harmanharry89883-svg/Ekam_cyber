@@ -1,0 +1,239 @@
+
+
+<div class="card">
+<h2>🔐 Password Generator</h2>
+
+<input type="number" id="passLength" value="16" min="8" max="64" placeholder="Password length">
+
+<button onclick="generatePassword()">Generate Password</button>
+
+<input type="text" id="generatedPassword" readonly placeholder="Generated password">
+
+<button onclick="copyPassword()">Copy Password</button>
+
+<p id="genResult" class="result"></p>
+</div>
+
+<script>
+function generatePassword(){
+const length = Number(document.getElementById('passLength').value);
+const output = document.getElementById('generatedPassword');
+const result = document.getElementById('genResult');
+
+if(!Number.isInteger(length) || length < 8 || length > 64){
+result.textContent = 'Choose length between 8 and 64.';
+return;
+}
+
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+const bytes = new Uint32Array(length);
+crypto.getRandomValues(bytes);
+
+let password = '';
+
+for(let i = 0; i < length; i++){
+password += chars[bytes[i] % chars.length];
+}
+
+output.value = password;
+result.textContent = 'Password generated successfully!';
+}
+
+function copyPassword(){
+const output = document.getElementById('generatedPassword');
+
+if(!output.value) return;
+
+navigator.clipboard.writeText(output.value)
+.then(() => {
+document.getElementById('genResult').textContent = 'Password copied!';
+})
+.catch(() => {
+document.getElementById('genResult').textContent = 'Copy unavailable. Select and copy manually.';
+});
+}
+</script>
+<div class="card">
+<h2>🌐 DNS Lookup</h2>
+<input id="domain" type="text" placeholder="example.com">
+<button onclick="dnsLookup()">Lookup DNS</button>
+<p id="dnsResult" class="result"></p>
+</div>
+
+<script>
+async function dnsLookup(){
+const domain=document.getElementById('domain').value.trim();
+const output=document.getElementById('dnsResult');
+
+if(!/^(?=.{1,253}$)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(domain)){
+output.textContent='Enter a valid domain name.';
+return;
+}
+
+output.textContent='Checking DNS...';
+
+try{
+const response=await fetch(
+'https://dns.google/resolve?name='+encodeURIComponent(domain)+'&type=A'
+);
+const data=await response.json();
+const records=(data.Answer||[]).filter(x=>x.type===1);
+
+output.textContent=records.length
+?records.map(x=>x.data).join(', ')
+:'No A records found.';
+}catch(e){
+output.textContent='DNS lookup failed. Check your internet connection.';
+}
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EKAM CYBER TOOLS</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:#e8faff;font-family:Arial,sans-serif}
+header{text-align:center;padding:35px 15px;background:#0c2030;border-bottom:2px solid #00e5ff}
+h1{color:#00e5ff}
+main{max-width:650px;margin:25px auto;padding:15px}
+.card{background:#102438;padding:22px;margin:18px 0;border:1px solid #087d91;border-radius:12px}
+input{width:100%;padding:13px;margin:12px 0;background:#07111f;color:white;border:1px solid #00c9e8;border-radius:7px}
+button{padding:12px 18px;background:#00d5e8;color:#00121b;border:0;border-radius:7px;font-weight:bold}
+.result{color:#00e5a0;margin-top:12px;overflow-wrap:anywhere}
+footer{text-align:center;padding:25px;color:#8ba8b8}
+</style>
+</head>
+<body>
+<header>
+<h1>⚡ EKAM CYBER TOOLS</h1>
+<p>Learn • Protect • Secure</p>
+</header>
+<main>
+<div class="card">
+<h2>🔐 Password Strength Checker</h2>
+<input type="password" id="pass" placeholder="Enter a test password">
+<button onclick="checkPassword()">Check Strength</button>
+<p id="passwordResult" class="result"></p>
+</div>
+
+<div class="card">
+<h2>🔗 URL Safety Checker</h2>
+<input type="url" id="url" placeholder="https://example.com">
+<button onclick="checkURL()">Check URL</button>
+<p id="urlResult" class="result"></p>
+</div>
+
+<div class="card">
+<h2>🛡️ Cybersecurity Learning</h2>
+<p>Learn about online safety, phishing, strong passwords and secure browsing.</p>
+</div>
+
+<div class="card">
+<h2>🌐 IP Information</h2>
+<button onclick="getIP()">Check My Public IP</button>
+<p id="ipResult" class="result"></p>
+</div>
+
+<script>
+async function getIP(){
+const output=document.getElementById('ipResult');
+output.textContent='Checking...';
+
+try{
+const response=await fetch('https://api.ipify.org?format=json');
+if(!response.ok) throw new Error();
+const data=await response.json();
+output.textContent='Your public IP: '+data.ip;
+}catch(e){
+output.textContent='Unable to fetch IP. Check internet.';
+}
+}
+</script>
+
+<div class="card">
+<h2>📱 QR Code Generator</h2>
+
+<input type="text" id="qrText" placeholder="Enter text or website URL">
+
+<button onclick="generateQR()">Generate QR Code</button>
+
+<div id="qrResult" class="result"></div>
+</div>
+
+<script>
+function generateQR(){
+const text=document.getElementById('qrText').value.trim();
+const output=document.getElementById('qrResult');
+
+if(!text){
+output.textContent='Please enter text or URL.';
+return;
+}
+
+output.innerHTML='';
+
+const img=document.createElement('img');
+img.alt='Generated QR Code';
+img.width=200;
+img.height=200;
+img.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(text);
+
+output.appendChild(img);
+}
+</script>
+
+</main>
+<footer>© 2026 EKAM CYBER TOOLS</footer>
+
+<script>
+function checkPassword(){
+const p=document.getElementById('pass').value;
+let score=0;
+if(p.length>=8)score++;
+if(p.length>=12)score++;
+if(/[A-Z]/.test(p))score++;
+if(/[a-z]/.test(p))score++;
+if(/[0-9]/.test(p))score++;
+if(/[^A-Za-z0-9]/.test(p))score++;
+let result=score<=2?'Weak':score<=4?'Medium':'Strong';
+document.getElementById('passwordResult').textContent=
+p.length===0?'Please enter a test password.':'Estimated strength: '+result;
+}
+function checkURL(){
+const value=document.getElementById('url').value.trim();
+const output=document.getElementById('urlResult');
+try{
+const u=new URL(value);
+if(!['http:','https:'].includes(u.protocol))throw Error();
+let warnings=[];
+if(u.protocol!=='https:')warnings.push('Not using HTTPS');
+if(u.username||u.password)warnings.push('Contains embedded login information');
+if(u.hostname.includes('xn--'))warnings.push('Internationalized domain: check carefully');
+output.textContent=warnings.length?'Warning signs: '+warnings.join('; '):'No basic warning signs detected. This does NOT guarantee the site is safe.';
+}catch(e){
+output.textContent='Please enter a valid HTTP or HTTPS URL.';
+}
+}
+</script>
+</body>
+</html>
+
+
+
+
+
