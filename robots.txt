@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://harmanharry89883-svg.github.io/Ekam_cyber/sitemap.xml
