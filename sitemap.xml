@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
@@ -27,4 +28,23 @@
 
 <url>
 <loc>https://harmanharry89883-svg.github.io/Ekam_cyber/articles.html</loc>
-</url></urlset>
+</url>
+
+<url>
+<loc>https://harmanharry89883-svg.github.io/Ekam_cyber/articles/cybersecurity-basics.html</loc>
+</url>
+
+<url>
+<loc>https://harmanharry89883-svg.github.io/Ekam_cyber/articles/strong-passwords.html</loc>
+</url>
+
+<url>
+<loc>https://harmanharry89883-svg.github.io/Ekam_cyber/articles/two-factor-authentication.html</loc>
+</url>
+
+<url>
+<loc>https://harmanharry89883-svg.github.io/Ekam_cyber/articles/online-scams.html</loc>
+</url>
+
+</urlset>
+
